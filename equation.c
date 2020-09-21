@@ -4,8 +4,8 @@
 
 #include "equation.h"
 #include <stdio.h>
-#include <math.h>
 #include <stdlib.h>
+#include <math.h>
 
 int countRoots(double a, double b, double c, double* x1, double* x2) {
     if (closeToZero(a)) {
@@ -19,6 +19,7 @@ int countRoots(double a, double b, double c, double* x1, double* x2) {
         }
 
         *x1 = -c / b;
+        removeNegativeZero(x1);
         *x2 = *x1;
 
         return 1;
@@ -34,13 +35,16 @@ int countRoots(double a, double b, double c, double* x1, double* x2) {
         // case of zero-discriminant
         if (closeToZero(discr)) {
             *x1 = -b / (2 * a);
+            removeNegativeZero(x1);
             *x2 = *x1;
 
             return 1;
         }
 
         *x1 = (-b - sqrt(discr)) / (2 * a);
+        removeNegativeZero(x1);
         *x2 = (-b + sqrt(discr)) / (2 * a);
+        removeNegativeZero(x2);
         if (*x2 < *x1) {
             double cop = *x2;
             *x2 = *x1;
@@ -53,6 +57,11 @@ int countRoots(double a, double b, double c, double* x1, double* x2) {
 
 bool closeToZero(double number) {
     return fabs(number) <= EPS;
+}
+
+void removeNegativeZero(double* value) {
+    if (closeToZero(*value))
+        *value = 0;
 }
 
 void printEquation(int rootsNumber, double a, double b, double c, const double *x1, const double *x2) {
@@ -68,7 +77,7 @@ void printEquation(int rootsNumber, double a, double b, double c, const double *
             break;
 
         case 1:
-            printf("Root: x = %lg", *x1);
+            printf("Root: x = %lg\n", *x1);
             break;
 
         case 2:

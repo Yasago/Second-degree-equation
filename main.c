@@ -1,7 +1,17 @@
 #include "equation.h"
 #include "testLib.h"
 #include <stdio.h>
+#include <math.h>
 
+const int MAX_VALUE = 2147483647;
+
+///
+/// @brief Entry point
+///
+/// Execution of the program
+/// starts here.
+///
+/// @return Program exit status
 int main() {
     runAllTests();
     printf("Please, enter coefficient A, B and C of your second-degree equation:\n");
@@ -12,9 +22,18 @@ int main() {
         while (!return_value) {
             printf("Enter first coefficient %c:\n", 'A' + i);
             return_value = scanf("%lg", &coefficient[i]);
+            if (fabs(coefficient[i]) > MAX_VALUE) {
+                return_value = 0;
+            }
+            else
+                removeNegativeZero(&coefficient[i]);
 
             // this loop will "eat" every character that's left in input buffer
-            while (getchar() != '\n') {
+            int c = getchar();
+            while (c != '\n') {
+                if (c != ' ')
+                    return_value = 0;
+                c = getchar();
             }
         }
     }

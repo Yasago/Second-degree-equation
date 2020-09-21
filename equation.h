@@ -26,6 +26,10 @@ int countRoots(double a, double b, double c, double* x1, double* x2);
 /// \return
 bool closeToZero(double number);
 
+/// Removes negative zero, if value has this case
+/// \param value
+void removeNegativeZero(double* value);
+
 ///
 /// Count roots of second-degree equation
 /// \param rootsNumber number of roots of the equation

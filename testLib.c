@@ -4,8 +4,7 @@
 
 #include "equation.h"
 #include <stdio.h>
-#include <winnt.h>
-#include <afxres.h>
+#include <assert.h>
 #include <math.h>
 
 void runAllTests() {
@@ -27,7 +26,6 @@ void runAllTests() {
             {2, 6, 0, -7, -sqrt(7.0/6), sqrt(7.0/6)},
     };
 
-    HANDLE hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
     for (int i = 0; i < sizeof(parameters) / sizeof(parameters[0]); ++i) {
         double  a = parameters[i][1],
                 b = parameters[i][2],
@@ -40,25 +38,21 @@ void runAllTests() {
         int rootsNum = countRoots(a, b, c, &realX1, &realX2);
         if (expectedRootsNum == rootsNum) {
             if (closeToZero(x1 - realX1) && closeToZero(x2 -realX2)) {
-                SetConsoleTextAttribute(hConsole, (WORD) (2));
                 printf("Test %d ok\n", i + 1);
             }
             else {
-                SetConsoleTextAttribute(hConsole, (WORD) (4));
                 printf("Test %d failed\nExpected roots: %lg and %lg  Actual root numbers: %lg and %lg\n",
                         i + 1, x1, x2, realX1, realX2);
                 printf("\nNot all test has been passed successfully");
-                exit(3);
+                assert(false);
             }
         }
         else {
-            SetConsoleTextAttribute(hConsole, (WORD) (4));
             printf("Test %d failed\nExpected root numbers: %d  Actual root numbers: %d\n",
                     i + 1, expectedRootsNum, rootsNum);
             printf("\nNot all test has been passed successfully");
-            exit(3);
+            assert(false);
         }
     }
     printf("All Tests Passed Successfully\n\n\n");
-    SetConsoleTextAttribute(hConsole, (WORD) (0));
 }
